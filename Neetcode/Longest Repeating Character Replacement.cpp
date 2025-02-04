@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int getMajorityCharacter(unordered_map<char, int> &fc) {
+    int getMajorityFreq(unordered_map<char, int> &fc) {
         int maxFreq = 0;
         for(auto it: fc)
             if(it.second > maxFreq)
@@ -17,11 +17,11 @@ public:
             // if current character freq is greater than majority character freq
             // reassign maj_ch
             max_freq = max(max_freq, fc[s[r]]);
-            
+
             while(l<r && (r-l+1)-max_freq > k) {
                 --fc[s[l]];
                 ++l;
-                max_freq = getMajorityCharacter(fc);
+                max_freq = getMajorityFreq(fc);
             }
             max_len = max(max_len, r-l+1);
             ++r;

@@ -49,3 +49,47 @@ public:
         return false;
     }
 };
+
+
+//  DFS Solution
+class TrieNode {
+    public:
+        bool endWord = false;
+        unordered_map<char, TrieNode*> children;
+};
+
+class WordDictionary {
+    TrieNode *root = new TrieNode();
+public:
+    WordDictionary() {}
+    
+    void addWord(string word) {
+        auto curNode = root;
+        for(auto letter: word) {
+            if(curNode->children.count(letter) == 0)
+                curNode->children[letter] = new TrieNode();
+            curNode = curNode->children[letter];
+        }
+        curNode->endWord = true;
+    }
+
+    bool dfs(auto curNode, const string word, int pos) {
+        if(pos == word.size()) return curNode->endWord;
+
+        char letter = word[pos];
+        if(letter == '.') {
+            for(auto it: curNode->children) {
+                if(dfs(curNode->children[it.first], word, pos+1))
+                    return true;
+            }
+        } else if(curNode->children.count(letter)) {
+            if(dfs(curNode->children[letter], word, pos+1))
+                return true;
+        }
+        return false;
+    }
+
+    bool search(string word) {
+        return dfs(root, word, 0);
+    }
+};
